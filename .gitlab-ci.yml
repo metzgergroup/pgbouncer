@@ -1,0 +1,32 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+stages:
+  - build
+  - release
+
+variables:
+  BUILD_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
+  RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+
+build:
+  stage: build
+  script:
+    - docker build -t $BUILD_IMAGE .
+    - docker push $BUILD_IMAGE
+  only:
+    - master
+
+release:
+  stage: release
+  script:
+    - docker pull $BUILD_IMAGE
+    - docker tag $BUILD_IMAGE $RELEASE_IMAGE
+    - docker push $RELEASE_IMAGE
+  only:
+    - master
