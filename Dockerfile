@@ -29,6 +29,7 @@ RUN set -ex; \
 
 EXPOSE 6432
 
+COPY pg_hba.conf /etc/pgbouncer/config/
 COPY entrypoint.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
