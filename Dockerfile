@@ -36,5 +36,5 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["entrypoint.sh"]
 
-CMD ["pgbouncer", "/run/secrets/pgbouncer_config"]
+CMD ["pgbouncer", "/run/secrets/pgbouncer_config.ini"]
 
