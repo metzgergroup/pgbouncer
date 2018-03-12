@@ -1,6 +1,6 @@
 # Based on https://github.com/mvanholsteijn/docker-makefile
 
-IMAGE_NAME = registry.gitlab.com/metzger-group/pgbouncer-rr
+IMAGE_NAME = registry.gitlab.com/metzger-group/pgbouncer
 RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
 VERSION = $(shell . $(RELEASE_SUPPORT) ; getVersion)
 TAG = $(shell . $(RELEASE_SUPPORT); getTag)
