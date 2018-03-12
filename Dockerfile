@@ -1,15 +1,34 @@
-FROM alpine:3.6
+FROM alpine:3.7
 
 RUN set -ex; \
     addgroup -S pgbouncer; \
     adduser -S -G pgbouncer pgbouncer
 
-RUN apk add --no-cache su-exec
-
-ENV VERSION_TAG pgbouncer_1_7_2
+ENV VERSION_TAG=pgbouncer_1_8_1
 
 RUN set -ex; \
-    apk add --no-cache git build-base automake libtool m4 autoconf libevent-dev openssl-dev c-ares-dev patch python-dev; \
+    apk add --no-cache --virtual .build-deps \
+        autoconf \
+        autoconf-doc \
+        automake \
+        c-ares-dev \
+        gcc \
+        git \
+        libc-dev \
+        libevent-dev \
+        libtool \
+        make \
+        openssl-dev \
+        patch \
+        python-dev \
+        py-docutils \
+    ; \
+    apk add --no-cache --virtual .run-deps \
+        c-ares \
+        libevent \
+        openssl \
+        su-exec \
+    ; \
     git clone --branch ${VERSION_TAG} --depth 1 https://github.com/pgbouncer/pgbouncer.git; \
     # Merge pgbouncer-rr extensions into pgbouncer code
     git clone --depth 1 https://github.com/awslabs/pgbouncer-rr-patch.git; \
@@ -23,9 +42,11 @@ RUN set -ex; \
     ./configure --prefix=/usr/local --with-libevent=/usr/lib; \
     make; \
     make install; \
-    apk del git build-base automake autoconf libtool m4; \
+    apk del --purge \
+        .build-deps \
+    ; \
     cd ..; \
-    rm -Rf pgbouncer pgbouncer-rr-patch
+    rm -Rf pgbouncer
 
 EXPOSE 6432
 
@@ -37,4 +58,3 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
 CMD ["pgbouncer", "/run/secrets/pgbouncer_config.ini"]
-
