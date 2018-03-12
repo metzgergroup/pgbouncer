@@ -1,27 +1,16 @@
-image: docker:latest
+image: docker:git
+
+# When using dind, it's wise to use the overlayfs driver for improved performance
+variables:
+  DOCKER_DRIVER: overlay2
 
 services:
   - docker:dind
 
-stages:
-  - build
-
-variables:
-  IMAGE_COMMIT: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-  IMAGE_LATEST: $CI_REGISTRY_IMAGE:latest
-
 before_script:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-  - export VERSION_TAG=$(echo $CI_COMMIT_TAG | sed -r 's/v([0-9]+\.[0-9]+\.[0-9]+.*)/\1/')
-  - export IMAGE_VERSION=$CI_REGISTRY_IMAGE:$VERSION_TAG
 
 build:
-  stage: build
   script:
-    - docker build --tag $IMAGE_COMMIT .
-    - docker tag $IMAGE_COMMIT $IMAGE_VERSION
-    - docker tag $IMAGE_COMMIT $IMAGE_LATEST
-    - docker push $IMAGE_VERSION
-    - docker push $IMAGE_LATEST
-  only:
-    - tags
+    - apk add --no-cache bash curl make
+    - make snapshot
