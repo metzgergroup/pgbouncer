@@ -19,8 +19,6 @@ RUN set -ex; \
         libtool \
         make \
         openssl-dev \
-        patch \
-        python-dev \
         py-docutils \
     ; \
     apk add --no-cache --virtual .run-deps \
@@ -30,11 +28,6 @@ RUN set -ex; \
         su-exec \
     ; \
     git clone --branch ${VERSION_TAG} --depth 1 https://github.com/pgbouncer/pgbouncer.git; \
-    # Merge pgbouncer-rr extensions into pgbouncer code
-    git clone --depth 1 https://github.com/awslabs/pgbouncer-rr-patch.git; \
-    cd pgbouncer-rr-patch; \
-    ./install-pgbouncer-rr-patch.sh ../pgbouncer; \
-    # Continue with standard pgbouncer installation
     cd ../pgbouncer; \
     git submodule init; \
     git submodule update; \
