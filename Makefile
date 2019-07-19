@@ -1,6 +1,6 @@
 # Based on https://github.com/mvanholsteijn/docker-makefile
 
-IMAGE_NAME = 899239495551.dkr.ecr.us-east-2.amazonaws.com/pgbouncer
+IMAGE_NAME = gcr.io/acat-shared/pgbouncer
 RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
 VERSION = $(shell . $(RELEASE_SUPPORT) ; getVersion)
 TAG = $(shell . $(RELEASE_SUPPORT); getTag)
