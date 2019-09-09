@@ -1,12 +1,12 @@
-FROM alpine:3.8
+FROM alpine:3.10
 
 RUN set -ex; \
     addgroup -S pgbouncer; \
     adduser -D -S -s /sbin/nologin -G pgbouncer pgbouncer
 
 # https://pgbouncer.github.io/downloads/
-ENV PGBOUNCER_VERSION=1.10.0
-ENV PGBOUNCER_SHA256=d8a01442fe14ce3bd712b9e2e12456694edbbb1baedb0d6ed1f915657dd71bd5
+ENV PGBOUNCER_VERSION=1.11.0
+ENV PGBOUNCER_SHA256=84802fa48a2806c53675764ce10a8b6e4733f196eb23e1aa4b954dcbe7287e70
 ENV CONFIG_DIR=/etc/pgbouncer
 
 RUN set -ex; \
