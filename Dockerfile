@@ -5,8 +5,8 @@ RUN set -ex; \
     adduser -D -S -s /sbin/nologin -G pgbouncer pgbouncer
 
 # https://pgbouncer.github.io/downloads/
-ENV PGBOUNCER_VERSION=1.11.0
-ENV PGBOUNCER_SHA256=84802fa48a2806c53675764ce10a8b6e4733f196eb23e1aa4b954dcbe7287e70
+ENV PGBOUNCER_VERSION=1.12.0
+ENV PGBOUNCER_SHA256=1b3c6564376cafa0da98df3520f0e932bb2aebaf9a95ca5b9fa461e9eb7b273e
 ENV CONFIG_DIR=/etc/pgbouncer
 
 RUN set -ex; \
